@@ -6,6 +6,7 @@ A prefeitura pode ter várias empresas as quais coleta impostos.
 Cada empresa deve fornecer 1.6% de seus lucros mensais para a prefeitura associada e deve ser feito o cálculo a partir desta informação de todas
 as empresas de uma prefeitura, quanto pagam mensalmente, pois este será o valor total de impostos.'''
 
+''' IMPLEMENTAÇÃO DA CLASSE EMPRESA '''
 class Empresa:
     def __init__(self,nome,cnpj,mediaFunc,mediaLucro):
         self.__nome = nome
@@ -41,11 +42,14 @@ class Empresa:
     def mediaLucro(self,mediaLucro):
         self.__mediaLucro = mediaLucro
 
+''' IMPLEMENTAÇÃO DA CLASSE PREFEITURA '''
 class Prefeitura:
-    def __init__(self,cidade,prefeito,totalImpostos = 0):
+    def __init__(self,cidade,prefeito,empresas=[],totalImpostos = 0):
         self.__cidade = cidade
         self.__prefeito = prefeito
+        self.__empresas = empresas
         self.__totalImpostos = totalImpostos
+    
 
     @property
     def cidade(self):
@@ -62,12 +66,20 @@ class Prefeitura:
         self.__prefeito = prefeito
     
     @property
+    def empresas(self):
+        return self.__empresas
+    @empresas.setter
+    def empresas(self,empresas):
+        self.__empresas = empresas
+    
+    @property
     def totalImpostos(self):
         return self.__totalImpostos
     @totalImpostos.setter
     def totalImpostos(self,totalImpostos):
         self.__totalImpostos = totalImpostos
 
+''' IMPLEMENTAÇÃO DA CLASSE PREFEITO '''
 class Prefeito:
     def __init__(self,nome,cpf,formacao):
         self.__nome = nome
@@ -95,6 +107,7 @@ class Prefeito:
     def formacao(self,formacao):
         self.__formacao = formacao
 
+'''TRECHO DO CÓDIGO MAIN'''
 print("|---------- Cadastro da Cidade ----------|")
 cidade = input("Insira o nome da cidade: ")
 nome = input(f"Insira o nome do prefeito de {cidade}: ")
@@ -108,12 +121,13 @@ print(f"|---------- Empresas de {cidade} ----------|")
 while True:
     empresa = input("Insira o nome da empresa: ")
     cnpj = input(f"Insira o cnpj da empresa {empresa}: ")
-    mediaFunc = input(f"Insira a média de funcionários da empresa {empresa}: ")
-    mediaLucro = input(f"Insira a média de lucro da empresa {empresa}: ")
+    mediaFunc = float(input(f"Insira a média de funcionários da empresa {empresa}: "))
+    mediaLucro = float(input(f"Insira a média de lucro da empresa {empresa}: "))
 
     empresa1 = Empresa(empresa,cnpj,mediaFunc,mediaLucro)
 
+    prefeitura1.empresas.append(empresa1)
     prefeitura1.totalImpostos += (empresa1.mediaLucro)*(1.6/100)
 
-    op = input("Deseja cadastrar nova empresa?").upper()
+    op = input("Deseja cadastrar nova empresa?(S/N): ").upper()
     if op == "N": break
